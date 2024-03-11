@@ -1,7 +1,11 @@
-import { NextResponse } from "next/server";
+import { connect } from "@/dbConfig/dbConfig";
+import User from "@/models/userModel";
+import { NextRequest, NextResponse } from "next/server";
+import bcryptjs from "bcryptjs";
 
+connect()
 
-export default function GET() {
+export async function GET() {
   try {
     const response = NextResponse.json(
       {
