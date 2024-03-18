@@ -16,20 +16,24 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = React.useState(false);
   const [userExists, setUserExists] = React.useState(true);
 
+
   const onLinkRequest = async () => {
     try {
       setLoading(true);
       const response = await axios.post("/api/users/forgotpassword", user);
       console.log("Account successfully found", response.data);
       setUserExists(true)
-      
-      // router.push("/profile")
     } catch (error: any) {
       console.log("password reset process failed", error.message);
       setUserExists(false);
       toast.error(error.message)
     } finally {
       setLoading(false);
+      setTimeout(() => {
+        router.refresh();
+        setUserExists(true);
+        setUser({ email: "" });
+      }, 5000);
     }
   }
 
@@ -57,9 +61,9 @@ export default function ForgotPasswordPage() {
 
       {/* NOTICE FOR PROCESS */}
       {!userExists ? (
-        <p className="border-[1px] border-red-400/40 text-red-500/80 rounded-xl px-10 py-5 mt-4 mb-8 max-w-120 bg-slate-950">That email address does not exist in our database.</p>
+        <p className="border-[1px] border-red-400/40 text-red-500/80 rounded-xl px-10 py-5 mt-4 mb-8 md:max-w-80 sm:max-w-[60%] max-w-[80%] bg-slate-950">That email address does not exist in our database. Please try again once the page has refreshed.</p>
       ) : (
-        <p className="border-[1px] border-red-400/20 text-gray-300/60 rounded-xl px-10 py-5 mt-4 mb-8 max-w-80 bg-slate-950">NOTE: After submitting, you will be sent a link redirecting you to a page in order for your password to be reset. The link will be sent to your email address</p>
+        <p className="border-[1px] border-red-400/20 text-gray-300/60 rounded-xl px-10 py-5 mt-4 mb-8 md:max-w-80 sm:max-w-[60%] max-w-[80%] bg-slate-950">NOTE: After submitting, a link for resetting your password will be sent to your mailbox.</p>
       )}
       
 
