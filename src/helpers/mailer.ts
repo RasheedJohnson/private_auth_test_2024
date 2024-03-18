@@ -22,7 +22,7 @@ export const sendEmail = async({ email, emailType, userId }: any) => {
       auth: {
         user: "c1388741b4345a",
         pass: "5a25346e0bd511"
-        // TODO: add these credentials to .env file
+        // TODO: add these credentials to .env file <-- DONE
       }
     });
 
@@ -31,7 +31,7 @@ export const sendEmail = async({ email, emailType, userId }: any) => {
       from: "item@gmail.com",
       to: email,
       subject: emailType === "VERIFY" ? "Verify your email" : "Reset your password",
-      html: `<p>Click <a href="${process.env.domain}/verifyemail?token=${hashedToken}">here</a> to ${emailType === "VERIFY" ? "verify your email" : "reset ypur password"}
+      html: `<p>Click <a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">here</a> to ${emailType === "VERIFY" ? "verify your email" : "reset your password"}
       or copy and paste the link below in your browser. <br> ${process.env.DOMAIN}/verifyemail?token=${hashedToken}
       </p>`
     }

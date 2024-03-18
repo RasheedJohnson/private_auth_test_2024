@@ -7,26 +7,26 @@ import toast from "react-hot-toast";
 
 
 
-export default function LoginPage() {
+export default function ForgotPasswordPage() {
   const router = useRouter();
   const [user, setUser] = React.useState({
     email: "",
-    password: '',
-
   });
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [userExists, setUserExists] = React.useState(true);
 
   const onLinkRequest = async () => {
     try {
       setLoading(true);
-      // const response = await axios.post("/api/users/login", user);
-      // console.log("signup success", response.data);
+      const response = await axios.post("/api/users/forgotpassword", user);
+      console.log("Account successfully found", response.data);
+      setUserExists(true)
+      
       // router.push("/profile")
-      console.log("test request: from 'app/forgotpassword/page.tsx'\nfunction: 'onLinkRequest()'")
     } catch (error: any) {
-      console.log("password reset process failed", error.message)
-
+      console.log("password reset process failed", error.message);
+      setUserExists(false);
       toast.error(error.message)
     } finally {
       setLoading(false);
@@ -56,7 +56,12 @@ export default function LoginPage() {
       />
 
       {/* NOTICE FOR PROCESS */}
-      <p className="border-[1px] border-red-400/20 text-red-300/60 rounded-xl px-10 py-5 mt-4 mb-8 max-w-80 bg-slate-950">NOTE: After submitting, you will be sent a link redirecting your to a page in order for your password to be reset. The link will be sent to your email address</p>
+      {!userExists ? (
+        <p className="border-[1px] border-red-400/40 text-red-500/80 rounded-xl px-10 py-5 mt-4 mb-8 max-w-120 bg-slate-950">That email address does not exist in our database.</p>
+      ) : (
+        <p className="border-[1px] border-red-400/20 text-gray-300/60 rounded-xl px-10 py-5 mt-4 mb-8 max-w-80 bg-slate-950">NOTE: After submitting, you will be sent a link redirecting you to a page in order for your password to be reset. The link will be sent to your email address</p>
+      )}
+      
 
       <button
         onClick={onLinkRequest}
